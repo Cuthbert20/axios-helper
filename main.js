@@ -59,8 +59,8 @@ function removeTodo() {
 function getData() {
   axios
     .all([
-      axios.get("https://jsonplaceholder.typicode.com/todos"),
-      axios.get("https://jsonplaceholder.typicode.com/posts")
+      axios.get("https://jsonplaceholder.typicode.com/todos?_limit=5"),
+      axios.get("https://jsonplaceholder.typicode.com/posts?_limit=5")
     ])
     //instead of using a callback in the .then and access each request from the array ie res[0], res[1].
     //we can use axios.spread which takes in a callback function, the arguments are the data you get back and you can name them (see below)
@@ -77,6 +77,17 @@ function getData() {
 // CANCEL TOKEN
 
 // INTERCEPTING REQUESTS & RESPONSES
+axios.interceptors.request.use(
+  config => {
+    console.log(
+      `${config.method.toUpperCase()} request sent to ${config.url.toUpperCase()} at ${new Date().getTime()}`
+    );
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 // AXIOS INSTANCES
 
